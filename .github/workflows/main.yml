@@ -1,0 +1,22 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: install stuff
+      run: |
+        sudo dpkg --add-architecture i386
+        sudo apt-get update
+        sudo apt-get install libcurl4-openssl-dev:i386 gcc-multilib
+    - name: compilo
+      run: gcc libdmcurl.c -o libdmcurl.so -lcurl -m32 -s -shared
+    - uses: actions/upload-artifact@master
+      with:
+        name: libdmcurl.so
+        path: libdmcurl.so
